@@ -1,0 +1,133 @@
+{
+	"$schema": "http://json-schema.org/schema#",
+	"id": "uri://registries/events#",
+
+	"blocks": {
+		"event": {
+			"title": "Základné informácie",
+            "transCode": "schema.event.baseData",
+			"type": "object",
+			"properties": {
+				"name": {
+					"title": "Názov udalosti",
+					"transCode": "schema.event.name",
+					"type": "string",
+					"required": true
+				},
+				"details": {
+					"title": "Detaily",
+					"transCode": "schema.event.details",
+					"type": "string",
+					"large":"true"
+				},
+				"location": {
+					"title": "Miesto udalosti",
+					"transCode": "schema.event.location",
+					"type": "string",
+					"required": true
+				},
+				"startDate": {
+					"title": "Dátum začatia",
+					"transCode": "schema.event.startDate",
+					"type": "string",
+					"required": true,
+					"render": {
+						"component": "psui-datepicker"
+					}
+				},
+				"endDate": {
+					"title": "Dátum ukončenia",
+					"transCode": "schema.event.endDate",
+					"type": "string",
+					"render": {
+						"component": "psui-datepicker"
+					}
+				},
+				"organizer": {
+					"title": "Organizátor",
+					"transCode": "schema.event.organizer",
+					"objectLink": {
+						"registry": "people",
+						"name": "baseData.name.v",
+						"surName": "baseData.surName.v"
+					}
+				},
+				"sponsor": {
+					"title": "Sponzor",
+					"transCode": "schema.event.sponsor",
+					"objectLink": {
+						"registry": "people",
+						"name": "baseData.name.v",
+						"surName": "baseData.surName.v"
+					}
+				},
+				"entranceFee": {
+					"title": "Vstupné",
+					"transCode": "schema.event.entranceFee",
+					"type": "string"
+				}
+			}
+		}
+	},
+
+	"models": {
+		"event": {
+			"title": "Udalosť",
+			"transCode": "schema.event.title",
+			"table": "events",
+			"security": {
+				"create": {
+					"static": [
+						"Registry - write"
+					]
+				},
+				"read": {
+					"static": [
+						"Registry - read"
+					]
+				},
+				"modify": {
+					"static": [
+						"Registry - write"
+					]
+				}
+			},
+			"properties": {
+				"baseData": {
+					"extends":"uri://registries/events#blocks/event"
+				}
+			}
+		}
+	},
+
+	"views": {
+		"event": {
+			"new": {
+				"extends":"uri://registries/events#models/event"
+			},
+			"view": {
+				"extends":"uri://registries/events#models/event"
+			},
+			"search": {
+				"extends":"uri://registries/events#models/event",
+				"listFields": [
+					{
+		            	"field":"baseData.name",
+		            	"title":"Názov", 
+		            	"transCode":"schema.event.listFields.title"
+		            },
+					{
+						"field":"baseData.location", 
+						"title":"Miesto", 
+						"transCode":"schema.event.listFields.location"
+					},
+					{
+						"field":"baseData.startDate", 
+						"title":"Dátum začatia", 
+						"transCode":"schema.event.listFields.startDate"
+					}
+				]
+			}
+		}
+	}
+}
